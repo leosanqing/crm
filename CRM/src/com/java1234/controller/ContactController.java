@@ -98,7 +98,7 @@ public class ContactController
 	/**
 	 * 删除交往记录
 	 * 
-	 * @param ids
+	 * @param id
 	 * @param response
 	 * @throws IOException
 	 */

@@ -73,7 +73,7 @@ public class CustomerController
 	/**
 	 * 添加或修改客户
 	 * 
-	 * @param dataDic
+	 * @param customer
 	 * @param response
 	 * @throws IOException
 	 */

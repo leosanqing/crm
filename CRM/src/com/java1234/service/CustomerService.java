@@ -30,7 +30,7 @@ public interface CustomerService
 	
 	/**
 	 * 添加客户
-	 * @param dataDic
+	 * @param customer
 	 * @return
 	 */
 	public int add(Customer customer);

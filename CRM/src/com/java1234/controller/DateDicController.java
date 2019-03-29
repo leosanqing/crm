@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.stereotype.Controller;
@@ -123,10 +124,13 @@ public class DateDicController
 	}
 	
 	@RequestMapping("/dataDicComboList")
-	public void dataDicComboList(@RequestParam(value="dataDicName") String dataDicName, HttpServletResponse response) throws IOException
+	public void dataDicComboList(@RequestParam(value="dataDicName") String dataDicName, HttpServletResponse response, HttpServletRequest request) throws IOException
 	{
+		request.setCharacterEncoding("gbk");
+		String str=new String(request.getParameter("dataDicName").getBytes("ISO8859-1"),"UTF-8");
+		response.setCharacterEncoding("utf-8");
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("dataDicName", dataDicName);
+		map.put("dataDicName", str);
 		List<DataDic> dataDicList = dataDicService.find(map);
 		JSONArray jsonArray = JSONArray.fromObject(dataDicList);
 		ResponseUtil.write(jsonArray, response);

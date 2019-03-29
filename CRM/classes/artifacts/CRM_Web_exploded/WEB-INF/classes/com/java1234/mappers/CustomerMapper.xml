@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.java1234.dao.CustomerDao">
+
+	<select id="find" parameterType="Map" resultType="Customer">
+		select * from t_customer
+		<where>
+			<if test="khno != null and khno != ''">
+				and khno like #{khno}
+			</if>
+			<if test="name != null and name != ''">
+				and name like #{name}
+			</if>
+		</where>
+		<if test="start != null and size != null">
+			limit #{start},#{size}
+		</if>
+	</select>
+
+	<select id="getTotal" parameterType="Map" resultType="Long">
+		select count(*) from t_customer
+		<where>
+			<if test="khno != null and khno != ''">
+				and khno like #{khno}
+			</if>
+			<if test="name != null and name != ''">
+				and name like #{name}
+			</if>
+		</where>
+	</select>
+
+	<insert id="add" parameterType="Customer">
+		insert into t_customer
+		values(null,#{khno},#{name},#{area},#{cusManager},#{level},#{myd},#{xyd},#{address},#{postCode},#{phone},#{fax},#{webSite},#{yyzzzch},#{fr},#{zczj},#{nyye},#{khyh},#{khzh},#{dsdjh},#{gsdjh},0);
+	</insert>
+	
+	<update id="update" parameterType="Customer">
+		update t_customer
+		<set>
+			<if test="name != null and name != ''">
+				name = #{name},
+			</if>
+			<if test="area != null and area != ''">
+				area = #{area},
+			</if>
+			<if test="cusManager != null and cusManager != ''">
+				cusManager = #{cusManager},
+			</if>
+			<if test="level != null and level != ''">
+				level = #{level},
+			</if>
+			<if test="myd != null and myd != ''">
+				myd = #{myd},
+			</if>
+			<if test="xyd != null and xyd != ''">
+				xyd = #{xyd},
+			</if>
+			<if test="address != null and address != ''">
+				address = #{address},
+			</if>
+			<if test="postCode != null and postCode != ''">
+				postCode = #{postCode},
+			</if>
+			<if test="phone != null and phone != ''">
+				phone = #{phone},
+			</if>
+			<if test="fax != null and fax != ''">
+				fax = #{fax},
+			</if>
+			<if test="webSite != null and webSite != ''">
+				webSite = #{webSite},
+			</if>
+			<if test="yyzzzch != null and yyzzzch != ''">
+				yyzzzch = #{yyzzzch},
+			</if>
+			<if test="fr != null and fr != ''">
+				fr = #{fr},
+			</if>
+			<if test="zczj != null and zczj != ''">
+				zczj = #{zczj},
+			</if>
+			<if test="nyye != null and nyye != ''">
+				nyye = #{nyye},
+			</if>
+			<if test="khyh != null and khyh != ''">
+				khyh = #{khyh},
+			</if>
+			<if test="khzh != null and khzh != ''">
+				khzh = #{khzh},
+			</if>
+			<if test="dsdjh != null and dsdjh != ''">
+				dsdjh = #{dsdjh},
+			</if>
+			<if test="gsdjh != null and gsdjh != ''">
+				gsdjh = #{gsdjh},
+			</if>
+			<if test="state != null">
+				state = #{state}
+			</if>
+		</set>
+		where id=#{id}
+	</update>
+
+	<delete id="delete" parameterType="Integer">
+		delete from t_customer where
+		id=#{id}
+	</delete>
+	
+	<select id="findById" parameterType="Integer" resultType="Customer">
+		select * from t_customer where id=#{id}
+	</select>
+
+	<select id="findLossCustomer" resultType="Customer">
+	<![CDATA[
+		select * from t_customer where id not in (select cusId from t_customer_order where date_add(orderDate, interval 6 month) > now()) and state=0
+    ]]>
+	</select>
+	
+	<select id="findCustomerGx" parameterType="Map" resultType="CustomerGx">
+		select t1.name,sum(t3.sum) as gx from t_customer t1 left join t_customer_order t2 on t1.id=t2.cusId left join t_order_details t3 on t2.id=t3.orderId
+		<where>
+			<if test="name!=null and name!='' ">
+				and t1.name like #{name}
+			</if>
+		</where>
+		group by t1.id
+		<if test="start!=null and size!=null">
+			limit #{start},#{size}
+		</if>
+	</select>
+	
+	<select id="findCustomerGc" resultType="CustomerGc">
+		select level as customerLevel,count(level) as customerNum from t_customer group by level
+	</select>
+	
+	<select id="findCustomerFw" resultType="CustomerFw">
+		select serveType,count(serveType) as num from t_customer_service group by serveType
+	</select>
+	
+</mapper> 

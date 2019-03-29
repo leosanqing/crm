@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.java1234.dao.DataDicDao">
+	
+	<select id="find" parameterType="Map" resultType="DataDic">
+		select * from t_dataDic
+		<where>
+			<if test="dataDicValue != null and dataDicValue != ''">
+				and dataDicValue like #{dataDicValue}
+			</if>
+			<if test="dataDicName != null and dataDicName != ''">
+				and dataDicName = #{dataDicName}
+			</if>
+		</where>
+		<if test="start != null and size != null">
+			limit #{start},#{size}
+		</if>
+	</select>
+	
+	<select id="getTotal" parameterType="Map" resultType="Long">
+		select count(*) from t_dataDic
+		<where>
+			<if test="dataDicValue != null and dataDicValue != ''">
+				and dataDicValue like #{dataDicValue}
+			</if>
+			<if test="dataDicName != null and dataDicName != ''">
+				and dataDicName = #{dataDicName}
+			</if>
+		</where>
+	</select>
+	
+	<select id="findDataDicName" resultType="DataDic">
+		select distinct dataDicName from t_dataDic
+	</select>
+
+	<insert id="add" parameterType="DataDic">
+		insert into t_dataDic
+		values(null,#{dataDicName},#{dataDicValue})
+	</insert>
+
+	<update id="update" parameterType="DataDic">
+		update t_dataDic
+		<set>
+			<if test="dataDicName != null and dataDicName != ''">
+				dataDicName = #{dataDicName},
+			</if>
+			<if test="dataDicValue != null and dataDicValue != ''">
+				dataDicValue = #{dataDicValue},
+			</if>
+		</set>
+		where id=#{id}
+	</update>
+
+	<delete id="delete" parameterType="Integer">
+		delete from t_dataDic where
+		id=#{id}
+	</delete>
+	
+</mapper> 

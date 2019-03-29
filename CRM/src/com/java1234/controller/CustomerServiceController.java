@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.propertyeditors.CustomDateEditor;
@@ -61,7 +62,7 @@ public class CustomerServiceController
 			@RequestParam(value = "page", required = false) String page,
 			@RequestParam(value = "rows", required = false) String rows,
 			String createTimefrom, String createTimeto,
-			CustomerService s_customerService, HttpServletResponse response)
+			CustomerService s_customerService, HttpServletResponse response, HttpServletRequest request)
 			throws Exception
 	{
 		PageBean pageBean = new PageBean(Integer.parseInt(page),
@@ -72,7 +73,8 @@ public class CustomerServiceController
 		map.put("overview",
 				StringUtil.formatLike(s_customerService.getOverview()));
 		map.put("serveType", s_customerService.getServeType());
-		map.put("state", s_customerService.getState());
+
+		map.put("state", new String(s_customerService.getState().getBytes("ISO8859-1"),"UTF-8"));
 		map.put("createTimefrom", createTimefrom);
 		map.put("createTimeto", createTimeto);
 		map.put("start", pageBean.getStart());
